@@ -1,0 +1,28 @@
+const express = require ('express');
+const pets = express.Router();
+const petsArray = require ('../models/pets');
+
+pets.get('/',(req,res)=>{
+    res.json(petsArray)
+})
+//creating a route 
+
+pets.get('/:arrayIndex', (req, res)=>{
+
+    const { arrayIndex } = req.params;
+
+    if (petsArray[arrayIndex]) {
+    res.status(200).json(petsArray[arrayIndex]);
+    //this res.status gives a status to showcase a working flow
+  } else {
+    res.status(404).json({ error: "No Pets Found, hound" })
+    //this is how you error handle
+  }
+});
+
+pets.post('/', (req, res)=> {
+    petsArray.push(req.body)
+    res.json(petsArray[petsArray.length - 1]);
+});
+
+module.exports= pets;
